@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <ActiveDirectory>
+    <SearchRoot>LDAP://OU=Users,OU=Company,DC=example,DC=com</SearchRoot>
+  </ActiveDirectory>
+  <ConfigurationManager>
+    <Server>sccm.example.com</Server>
+  </ConfigurationManager>
+</Settings>

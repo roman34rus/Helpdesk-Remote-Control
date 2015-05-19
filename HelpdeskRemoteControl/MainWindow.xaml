@@ -1,0 +1,219 @@
+﻿<Window x:Class="HelpdeskRemoteControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="434" Width="788">
+
+    <Window.Resources>
+        <Style x:Key="ButtonAsHyperlink" TargetType="Button">
+            <Setter Property='Template'>
+                <Setter.Value>
+                    <ControlTemplate   TargetType='Button'>
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property='Foreground' Value='#195AE0'/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="20"/>
+            <Style.Triggers>
+                <Trigger Property='IsMouseOver' Value='true'>
+                    <Setter Property='Cursor' Value='Hand' />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10,0,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="ShowAbout" Content="О программе" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Click="ShowAbout_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+        </Grid>
+
+        <TabControl Grid.Row="1">
+            <TabItem x:Name="UserTab" Header="Поиск пользователя">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Имя или логин пользователя:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+
+                        <TextBox x:Name="UserSearchString" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Введите имя или логин пользователя. Например: &quot;Петров Иван&quot;, &quot;PetrovIS&quot;." Grid.Column="0" Grid.Row="1" KeyUp="UserSearchString_KeyUp"/>
+                        <Button x:Name="SearchUserButton" Content="Найти" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SearchUserButton_Click" Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonAsHyperlink}" Margin="10,0,0,0"/>
+
+                        <Label Content="Найденные пользователи:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
+
+                        <ListBox x:Name="UserList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" SelectionChanged="UserList_SelectionChanged" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" MouseDoubleClick="UserList_MouseDoubleClick" ToolTip="Двойной клик по имени пользователя - переход к поиску компьютеров этого пользователя."/>
+                    </Grid>
+
+                    <Grid Grid.Column="1" Margin="20,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Image x:Name="UserPhoto" Width="96" Height="96" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" />
+                        <Label Content="ФИО" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="1"/>
+                        <Label Content="Организация" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="2"/>
+                        <Label Content="Подразделение" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="3"/>
+                        <Label Content="Должность" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="4"/>
+                        <Label Content="Кабинет" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="5"/>
+                        <Label Content="E-mail" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="6"/>
+                        <Label Content="Телефон" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="7"/>
+                        <Label Content="Мобильный телефон" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="8"/>
+                        <Label Content="IP-телефон" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="9"/>
+                        
+
+                        <TextBox x:Name="UserDisplayName" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" IsEnabled="False"/>
+                        <TextBox x:Name="UserCompany" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" IsEnabled="False"/>
+                        <TextBox x:Name="UserDepartment" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3" IsEnabled="False"/>
+                        <TextBox x:Name="UserJobTitle" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="4" IsEnabled="False"/>
+                        <TextBox x:Name="UserOffice" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" IsEnabled="False"/>
+                        <TextBox x:Name="UserMail" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" IsEnabled="False"/>
+                        <TextBox x:Name="UserWorkPhone" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="7" IsEnabled="False"/>
+                        <TextBox x:Name="UserMobilePhone" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="8" IsEnabled="False"/>
+                        <TextBox x:Name="UserIPPhone" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="9" IsEnabled="False"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="ComputerTab" Header="Поиск компьютера">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Логин пользователя:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+
+                        <TextBox x:Name="ComputerSearchString" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Введите имя или логин пользователя. Например: &quot;PetrovIS&quot;." Grid.Column="0" Grid.Row="1" KeyUp="ComputerSearchString_KeyUp"/>
+                        <Button x:Name="SearchComputerButton" Content="Найти" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SearchComputerButton_Click" Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonAsHyperlink}" Margin="10,0,0,0"/>
+
+                        <Label Content="Компьютеры, куда пользователь входил последним:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
+
+                        <ListBox x:Name="ComputerList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" SelectionChanged="ComputerList_SelectionChanged" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" MouseDoubleClick="ComputerList_MouseDoubleClick" ToolTip="Двойной клик по имени компьютера - переход к удаленному управлению этим компьютером."/>
+                    </Grid>
+
+                    <Grid Grid.Column="1" Margin="20,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Имя компьютера" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
+                        <Label Content="IP адреса" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"/>
+                        <Label Content="Последний пользователь" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2"/>
+                        <Label Content="Время логина пользователя" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3"/>
+                        <Label Content="Версия клиента SCCM" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="4"/>
+                        <Label Content="Сайт SCCM" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="5"/>
+                        <Label Content="Описание компьютера" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="6"/>
+
+                        <TextBox x:Name="ComputerName" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerIPAddresses" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerLastUserDomainAndName" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerLastUserLoginTime" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerSCCMClientVersion" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="4" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerSCCMAssignedSites" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerDescription" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" IsEnabled="False"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="RemoteTab" Header="Удаленное управление" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Имя или IP адрес компьютера:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
+
+                        <TextBox x:Name="ConnectionString" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" ToolTip="Имя компьютера. Например: &quot;ws-test-01&quot;." Grid.Column="0" Grid.Row="1"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Margin="10,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Click="PingButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="PSRemoteSessionButton" Content="Удаленная сессия Powershell" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" Click="PSRemoteSessionButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="ComputerManagementButton" Content="Управление компьютером" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" Click="ComputerManagementButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="SCCMRemoteControlButton" Content="SCCM Remote Control" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" Click="SCCMRemoteControlButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="RemoteAssistantButton" Content="Удаленный помощник" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" Click="RemoteAssistantButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="RemoteDesktopButton" Content="Удаленный рабочий стол" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Click="RemoteDesktopButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
