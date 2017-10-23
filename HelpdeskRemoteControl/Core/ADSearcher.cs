@@ -63,6 +63,7 @@ namespace HelpdeskRemoteControl.Core
                 _search.PropertiesToLoad.Add("mobile");
                 _search.PropertiesToLoad.Add("ipphone");
                 _search.PropertiesToLoad.Add("thumbnailphoto");
+                _search.PropertiesToLoad.Add("pwdlastset");
 
                 SearchResultCollection searchResults;
 
@@ -104,7 +105,10 @@ namespace HelpdeskRemoteControl.Core
 
                     if (searchResult.Properties.Contains("thumbnailphoto"))
                         user.Photo = (byte[])searchResult.Properties["thumbnailphoto"][0];
-                        
+
+                    if (searchResult.Properties.Contains("pwdlastset"))
+                        user.PasswordLastSet = DateTime.FromFileTime((Int64)searchResult.Properties["pwdlastset"][0]);
+
                     result.Add(user);
                 }
             }

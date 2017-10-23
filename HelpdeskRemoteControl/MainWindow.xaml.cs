@@ -140,6 +140,7 @@ namespace HelpdeskRemoteControl
                 UserMobilePhone.Text = user.MobilePhone;
                 UserIPPhone.Text = user.IPPhone;
                 UserPhoto.Source = Helper.ByteArrayToBitmapImage(user.Photo);
+                UserPasswordLastSet.Text = user.PasswordLastSet.ToString();
 
                 // Заполняем поле для поиска компьютеров.
                 ComputerSearchString.Text = user.Login;

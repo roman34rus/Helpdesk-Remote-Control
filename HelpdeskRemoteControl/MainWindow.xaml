@@ -1,6 +1,6 @@
 ﻿<Window x:Class="HelpdeskRemoteControl.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="434" Width="788">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="463.769" Width="788">
 
     <Window.Resources>
         <Style x:Key="ButtonAsHyperlink" TargetType="Button">
@@ -85,6 +85,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Image x:Name="UserPhoto" Width="96" Height="96" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" />
@@ -97,7 +98,7 @@
                         <Label Content="Телефон" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="7"/>
                         <Label Content="Мобильный телефон" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="8"/>
                         <Label Content="IP-телефон" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="9"/>
-                        
+                        <Label Content="Пароль изменен" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Grid.Column="0" Grid.Row="10"/>
 
                         <TextBox x:Name="UserDisplayName" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" IsEnabled="False"/>
                         <TextBox x:Name="UserCompany" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" IsEnabled="False"/>
@@ -108,6 +109,7 @@
                         <TextBox x:Name="UserWorkPhone" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="7" IsEnabled="False"/>
                         <TextBox x:Name="UserMobilePhone" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="8" IsEnabled="False"/>
                         <TextBox x:Name="UserIPPhone" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="9" IsEnabled="False"/>
+                        <TextBox x:Name="UserPasswordLastSet" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="10" IsEnabled="False"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -205,11 +207,11 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Click="PingButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
-                        <Button x:Name="PSRemoteSessionButton" Content="Удаленная сессия Powershell" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" Click="PSRemoteSessionButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
-                        <Button x:Name="ComputerManagementButton" Content="Управление компьютером" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" Click="ComputerManagementButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
-                        <Button x:Name="SCCMRemoteControlButton" Content="SCCM Remote Control" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" Click="SCCMRemoteControlButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
-                        <Button x:Name="RemoteAssistantButton" Content="Удаленный помощник" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" Click="RemoteAssistantButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Click="PingButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="PSRemoteSessionButton" Content="Удаленная сессия Powershell" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" Click="PSRemoteSessionButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="ComputerManagementButton" Content="Управление компьютером" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" Click="ComputerManagementButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="SCCMRemoteControlButton" Content="SCCM Remote Control" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" Click="SCCMRemoteControlButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="RemoteAssistantButton" Content="Удаленный помощник" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" Click="RemoteAssistantButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
                         <Button x:Name="RemoteDesktopButton" Content="Удаленный рабочий стол" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Click="RemoteDesktopButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
                     </Grid>
                 </Grid>
