@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 //    C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll
 // Added the below Configuration Manager namespaces to support basic SMS Provider operations:
 using Microsoft.ConfigurationManagement.ManagementProvider;
-using Microsoft.ConfigurationManagement.ManagementProvider.WqlQueryEngine; 
+using Microsoft.ConfigurationManagement.ManagementProvider.WqlQueryEngine;
 
 namespace HelpdeskRemoteControl.Core
 {

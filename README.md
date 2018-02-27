@@ -22,9 +22,9 @@
 	 
 # Требования
 
-- .Net Framework 4
+- .Net Framework 4.5
 - Active Directory
-- System Center Configuration Manager 2012
+- System Center Configuration Manager Current Branch (тестировалось на версии 1706)
 
 # Настройка
 
