@@ -45,7 +45,7 @@ namespace HelpdeskRemoteControl.Core
         public byte[] Photo { get; set; }
 
         // Атрибут AD: User.pwdLastSet
-        public DateTime PasswordLastSet { get; set; }
+        public string PasswordLastSet { get; set; }
 
         // Переопределение метода ToString() нужно для корректного отображения в ListBox.
         public override string ToString()

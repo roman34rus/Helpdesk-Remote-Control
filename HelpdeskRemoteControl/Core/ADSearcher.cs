@@ -107,7 +107,14 @@ namespace HelpdeskRemoteControl.Core
                         user.Photo = (byte[])searchResult.Properties["thumbnailphoto"][0];
 
                     if (searchResult.Properties.Contains("pwdlastset"))
-                        user.PasswordLastSet = DateTime.FromFileTime((Int64)searchResult.Properties["pwdlastset"][0]);
+                    {
+                        DateTime pwdLastSet = DateTime.FromFileTime((Int64)searchResult.Properties["pwdlastset"][0]);
+
+                        int daysAgo = DateTime.Now.Subtract(pwdLastSet).Days;
+
+                        user.PasswordLastSet = pwdLastSet.ToString("dd.MM.yyyy HH:mm:ss") + " (" + daysAgo.ToString() + " дней назад)";
+                    }
+                        
 
                     result.Add(user);
                 }
