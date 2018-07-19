@@ -76,9 +76,13 @@ namespace HelpdeskRemoteControl.Core
                         computer.SCCMAssignedSites += site + " ";
                     }
 
-                    // Добавляем описание компьютера из Active Directory.
+                    // Добавляем атрибуты компьютера из Active Directory.
                     ADSearcher adSearcher = new ADSearcher();
-                    computer.Description = adSearcher.GetComputerDescriptionByName(computer.Name);
+
+                    ADComputer adComputer = adSearcher.GetComputerByName(computer.Name);
+
+                    computer.Description = adComputer.Description;
+                    computer.LocalAdminPassword = adComputer.LocalAdminPassword;
 
                     result.Add(computer);
                 }

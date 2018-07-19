@@ -158,6 +158,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Label Content="Имя компьютера" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
@@ -167,6 +168,7 @@
                         <Label Content="Версия клиента SCCM" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="4"/>
                         <Label Content="Сайт SCCM" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="5"/>
                         <Label Content="Описание компьютера" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="6"/>
+                        <Label Content="Пароль лок. администратора" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="7"/>
 
                         <TextBox x:Name="ComputerName" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" IsEnabled="False"/>
                         <TextBox x:Name="ComputerIPAddresses" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" IsEnabled="False"/>
@@ -175,6 +177,7 @@
                         <TextBox x:Name="ComputerSCCMClientVersion" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="4" IsEnabled="False"/>
                         <TextBox x:Name="ComputerSCCMAssignedSites" HorizontalAlignment="Stretch" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" IsEnabled="False"/>
                         <TextBox x:Name="ComputerDescription" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" IsEnabled="False"/>
+                        <TextBox x:Name="ComputerLocalAdminPassword" HorizontalAlignment="Stretch" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="7" IsEnabled="False"/>
                     </Grid>
                 </Grid>
             </TabItem>

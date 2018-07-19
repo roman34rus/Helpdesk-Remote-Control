@@ -128,27 +128,31 @@ namespace HelpdeskRemoteControl.Core
         }
 
         /// <summary>
-        /// Возвращает описание заданного компьютера.
+        /// Возвращает атрибуты компьютера по имени.
         /// </summary>
         /// <param name="name">Имя компьютера.</param>
-        /// <returns>Описание компьютера.</returns>
-        public string GetComputerDescriptionByName(string name)
+        /// <returns>Атрибуты компьютера.</returns>
+        public ADComputer GetComputerByName(string name)
         {
-            string result = "";
+            ADComputer result = new ADComputer();
 
             try
             {
                 _search.Filter = "(&(objectClass=computer)(name=" + name + "))";
 
                 _search.PropertiesToLoad.Add("description");
+                _search.PropertiesToLoad.Add("ms-Mcs-AdmPwd");
 
                 SearchResult searchResult = _search.FindOne();
 
                 if (searchResult != null)
+                { 
                     if (searchResult.Properties.Contains("description"))
-                        result = (String)searchResult.Properties["description"][0];
+                        result.Description = (String)searchResult.Properties["description"][0];
 
-                return result;
+                    if (searchResult.Properties.Contains("ms-Mcs-AdmPwd"))
+                        result.LocalAdminPassword = (String)searchResult.Properties["ms-Mcs-AdmPwd"][0];
+                }
             }
             catch (Exception e)
             {
