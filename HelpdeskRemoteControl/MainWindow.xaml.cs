@@ -227,6 +227,7 @@ namespace HelpdeskRemoteControl
                 ComputerSCCMClientVersion.Text = "";
                 ComputerSCCMAssignedSites.Text = "";
                 ComputerDescription.Text = "";
+                ComputerLocalAdminPassword.Text = "";
 
                 // Очищаем поле для подключения к компьютеру.
                 ConnectionString.Text = "";
