@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Added the below Configuration Manager DLL references to support basic SMS Provider operations:
 //    C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.ManagementProvider.dll
@@ -11,19 +9,19 @@ using System.Threading.Tasks;
 using Microsoft.ConfigurationManagement.ManagementProvider;
 using Microsoft.ConfigurationManagement.ManagementProvider.WqlQueryEngine;
 
-namespace HelpdeskRemoteControl.Core
+namespace HelpdeskRemoteControl.SCCM
 {
     /// <summary>
-    /// Класс для поиска в Configuration Manager.
+    /// Содержит методы для поиска в Configuration Manager.
     /// </summary>
     public class SCCMSearcher
     {
         private WqlConnectionManager _connection;
 
         /// <summary>
-        /// Конструктор.
+        /// Инициализирует новый экземпляр класса для поиска на указанном сервере Configuration Manager.
         /// </summary>
-        public SCCMSearcher()
+        public SCCMSearcher(string sccmServer)
         {
             try
             {
@@ -31,65 +29,54 @@ namespace HelpdeskRemoteControl.Core
 
                 _connection = new WqlConnectionManager(namedValues);
 
-                _connection.Connect(SettingsReader.SCCMServer);
+                _connection.Connect(sccmServer);
             }
-            catch (SmsException e)
+            catch (Exception e)
             {
-                Helper.ErrorMessage("Ошибка при подключении к Configuration Manager. " + e.Message);
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Helper.ErrorMessage("Ошибка при аутентификации в Configuration Manager. " + e.Message);
+                throw new Exception("Ошибка при подключении к Configuration Manager. " + e.Message);
             }
         }
 
         /// <summary>
-        /// Получение списка компьютеров, на которых последним логинился указанный пользователь.
+        /// Возвращает список компьютеров по логину последнего пользователя.
         /// </summary>
-        /// <param name="searchString">Логин пользователя.</param>
-        /// <returns>Список компьютеров с сортировкой по имени компьютера.</returns>
-        public List<Computer> GetComputersByUserLogin(string searchString)
+        public List<SCCMComputer> GetComputersByUserLogin(string userLogin)
         {
-            List<Computer> result = new List<Computer>();
+            List<SCCMComputer> result = new List<SCCMComputer>();
 
             try
             {
-                string query = @"SELECT * FROM SMS_R_System WHERE LOWER(SMS_R_System.LastLogonUserName) like '%" + searchString.ToLower() + @"%'";
+                string query = @"SELECT * FROM SMS_R_System WHERE LOWER(SMS_R_System.LastLogonUserName) like '%" + userLogin.ToLower() + @"%'";
 
                 IResultObject queryResults = _connection.QueryProcessor.ExecuteQuery(query);
 
                 foreach (IResultObject queryResult in queryResults)
                 {
-                    var computer = new Computer();
+                    SCCMComputer computer = new SCCMComputer();
 
                     computer.Name = queryResult["Name"].StringValue;
+
                     foreach (string address in queryResult["IPAddresses"].StringArrayValue)
                     {
                         computer.IPAddresses += address + " ";
                     }
+
                     computer.LastUserDomain = queryResult["LastLogonUserDomain"].StringValue;
                     computer.LastUserName = queryResult["LastLogonUserName"].StringValue;
                     computer.LastUserLogonTime = queryResult["LastLogonTimeStamp"].DateTimeValue;
                     computer.SCCMClientVersion = queryResult["ClientVersion"].StringValue;
+
                     foreach (string site in queryResult["SMSAssignedSites"].StringArrayValue)
                     {
                         computer.SCCMAssignedSites += site + " ";
                     }
 
-                    // Добавляем атрибуты компьютера из Active Directory.
-                    ADSearcher adSearcher = new ADSearcher();
-
-                    ADComputer adComputer = adSearcher.GetComputerByName(computer.Name);
-
-                    computer.Description = adComputer.Description;
-                    computer.LocalAdminPassword = adComputer.LocalAdminPassword;
-
                     result.Add(computer);
                 }
             }
-            catch (SmsException e)
+            catch (Exception e)
             {
-                Helper.ErrorMessage("Ошибка при поиске в Configuration Manager. " + e.Message);
+                throw new Exception("Ошибка при поиске в Configuration Manager. " + e.Message);
             }
 
             return result.OrderBy(x => x.Name).ToList();

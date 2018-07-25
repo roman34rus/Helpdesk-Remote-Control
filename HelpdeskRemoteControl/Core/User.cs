@@ -1,51 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HelpdeskRemoteControl.AD;
 
 namespace HelpdeskRemoteControl.Core
 {
     /// <summary>
-    /// Пользователь
+    /// Содержит данные о пользователе.
     /// </summary>
     public class User
     {
-        // Атрибут AD: User.sAMAccountName
         public string Login { get; set; }
 
-        // Атрибут AD: User.DisplayName
         public string DisplayName { get; set; }
 
-        // Атрибут AD: User.Company
         public string Company { get; set; }
 
-        // Атрибут AD: User.Department
         public string Department { get; set; }
 
-        // Атрибут AD: User.Title
         public string JobTitle { get; set; }
 
-        // Атрибут AD: User.PhysicalDeliveryOfficeName
         public string Office { get; set; }
 
-        // Атрибут AD: User.Mail
         public string Mail { get; set; }
 
-        // Атрибут AD: User.TelephoneNumber
         public string WorkPhone { get; set; }
 
-        // Атрибут AD: User.Mobile
         public string MobilePhone { get; set; }
 
-        // Атрибут AD: User.IPPhone
         public string IPPhone { get; set; }
 
-        // Атрибут AD: User.ThumbnailPhoto
         public byte[] Photo { get; set; }
 
-        // Атрибут AD: User.pwdLastSet
         public string PasswordLastSet { get; set; }
+
+        public User(ADUser adUser)
+        {
+            if (adUser != null)
+            {
+                Login = adUser.Login;
+                DisplayName = adUser.DisplayName;
+                Company = adUser.Company;
+                Department = adUser.Department;
+                JobTitle = adUser.JobTitle;
+                Office = adUser.Office;
+                Mail = adUser.Mail;
+                WorkPhone = adUser.WorkPhone;
+                MobilePhone = adUser.MobilePhone;
+                IPPhone = adUser.IPPhone;
+                Photo = adUser.Photo;
+
+                int daysFromPasswordSet = DateTime.Now.Subtract(adUser.PasswordLastSet).Days;
+
+                PasswordLastSet = adUser.PasswordLastSet.ToString("dd.MM.yyyy HH:mm:ss") + " (" + daysFromPasswordSet.ToString() + " дней назад)";
+            }
+        }
 
         // Переопределение метода ToString() нужно для корректного отображения в ListBox
         public override string ToString()

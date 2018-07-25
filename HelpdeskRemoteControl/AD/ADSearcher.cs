@@ -1,56 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.DirectoryServices;
-using System.DirectoryServices.ActiveDirectory;
 
-namespace HelpdeskRemoteControl.Core
+namespace HelpdeskRemoteControl.AD
 {
     /// <summary>
-    /// Класс для поиска в Active Directory.
+    /// Содержит методы для поиска в Active Directory.
     /// </summary>
     public class ADSearcher
     {
         private DirectorySearcher _search;
-                
+        
         /// <summary>
-        /// Конструктор.
+        /// Инициализирует новый экземпляр класса для поиска в Active Directory по указанному пути.
         /// </summary>
-        public ADSearcher()
+        public ADSearcher(string adSearchRoot)
         {
             try
             {
-                DirectoryEntry entry = new DirectoryEntry(SettingsReader.ADSearchRoot);
+                DirectoryEntry entry = new DirectoryEntry(adSearchRoot);
 
                 _search = new DirectorySearcher(entry);
             }
             catch (Exception e)
             {
-                Helper.ErrorMessage("Ошибка при подключении к Active Directory. " + e.Message);
+                throw new Exception("Ошибка при подключении к Active Directory. " + e.Message);
             }
         }
 
         /// <summary>
-        /// Получение списка пользователей с заданным именем или логином.
+        /// Возвращает список пользователей по имени или логину. Имя/логин можно указать не полностью.
         /// </summary>
-        /// <param name="searchString">Имя или логин пользователя.</param>
-        /// <returns>Список пользователей c сортировкой по DisplayName.</returns>
-        public List<User> GetUsersByNameOrLogin(string searchString)
+        public List<ADUser> GetUsersByNameOrLogin(string nameOrLogin)
         {
-            List<User> result = new List<User>();
+            List<ADUser> users = new List<ADUser>();
 
-            string searchStringEx;
+            string searchString;
 
-            if (String.IsNullOrWhiteSpace(searchString))
-                searchStringEx = @"*";
+            if (String.IsNullOrWhiteSpace(nameOrLogin))
+                searchString = @"*";
             else
-                searchStringEx = @"*" + searchString + @"*";
+                searchString = @"*" + nameOrLogin + @"*";
 
             try
             {
-                _search.Filter = "(&(objectCategory=person)(objectClass=user)(|(name=" + searchStringEx + ")(displayname=" + searchStringEx + ")(samaccountname=" + searchStringEx + ")))";
+                _search.Filter = "(&(objectCategory=person)(objectClass=user)(|(name=" + searchString + ")(displayname=" + searchString + ")(samaccountname=" + searchString + ")))";
 
                 _search.PropertiesToLoad.Add("samaccountname");
                 _search.PropertiesToLoad.Add("displayname");
@@ -65,13 +60,11 @@ namespace HelpdeskRemoteControl.Core
                 _search.PropertiesToLoad.Add("thumbnailphoto");
                 _search.PropertiesToLoad.Add("pwdlastset");
 
-                SearchResultCollection searchResults;
-
-                searchResults = _search.FindAll();
+                SearchResultCollection searchResults = _search.FindAll();
 
                 foreach (SearchResult searchResult in searchResults)
                 {
-                    var user = new User();
+                    ADUser user = new ADUser();
 
                     if (searchResult.Properties.Contains("samaccountname"))
                         user.Login = (String)searchResult.Properties["samaccountname"][0];
@@ -107,59 +100,54 @@ namespace HelpdeskRemoteControl.Core
                         user.Photo = (byte[])searchResult.Properties["thumbnailphoto"][0];
 
                     if (searchResult.Properties.Contains("pwdlastset"))
-                    {
-                        DateTime pwdLastSet = DateTime.FromFileTime((Int64)searchResult.Properties["pwdlastset"][0]);
+                        user.PasswordLastSet = DateTime.FromFileTime((Int64)searchResult.Properties["pwdlastset"][0]);
 
-                        int daysAgo = DateTime.Now.Subtract(pwdLastSet).Days;
-
-                        user.PasswordLastSet = pwdLastSet.ToString("dd.MM.yyyy HH:mm:ss") + " (" + daysAgo.ToString() + " дней назад)";
-                    }
-                        
-
-                    result.Add(user);
+                    users.Add(user);
                 }
             }
             catch (Exception e)
             {
-                Helper.ErrorMessage("Ошибка при поиске в Active Directory. " + e.Message);
+                throw new Exception("Ошибка при поиске в Active Directory. " + e.Message);
             }
             
-            return result.OrderBy(x => x.DisplayName).ToList();
+            return users.OrderBy(x => x.DisplayName).ToList();
         }
 
         /// <summary>
-        /// Возвращает атрибуты компьютера по имени.
+        /// Возвращает компьютер по имени.
         /// </summary>
-        /// <param name="name">Имя компьютера.</param>
-        /// <returns>Атрибуты компьютера.</returns>
         public ADComputer GetComputerByName(string name)
         {
-            ADComputer result = new ADComputer();
+            ADComputer computer = new ADComputer();
 
             try
             {
                 _search.Filter = "(&(objectClass=computer)(name=" + name + "))";
 
+                _search.PropertiesToLoad.Add("name");
                 _search.PropertiesToLoad.Add("description");
                 _search.PropertiesToLoad.Add("ms-Mcs-AdmPwd");
 
                 SearchResult searchResult = _search.FindOne();
 
-                if (searchResult != null)
-                { 
-                    if (searchResult.Properties.Contains("description"))
-                        result.Description = (String)searchResult.Properties["description"][0];
+                if (searchResult == null)
+                    return null;
 
-                    if (searchResult.Properties.Contains("ms-Mcs-AdmPwd"))
-                        result.LocalAdminPassword = (String)searchResult.Properties["ms-Mcs-AdmPwd"][0];
-                }
+                if (searchResult.Properties.Contains("name"))
+                    computer.Name = (String)searchResult.Properties["name"][0];
+
+                if (searchResult.Properties.Contains("description"))
+                    computer.Description = (String)searchResult.Properties["description"][0];
+
+                if (searchResult.Properties.Contains("ms-Mcs-AdmPwd"))
+                    computer.LocalAdminPassword = (String)searchResult.Properties["ms-Mcs-AdmPwd"][0];
             }
             catch (Exception e)
             {
-                Helper.ErrorMessage("Ошибка при поиске в Active Directory. " + e.Message);
+                throw new Exception("Ошибка при поиске в Active Directory. " + e.Message);
             }
 
-            return result;
+            return computer;
         }
     }
 }

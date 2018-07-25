@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Reflection;
+using System.Xml;
 using HelpdeskRemoteControl.Core;
 
 namespace HelpdeskRemoteControl
@@ -24,32 +25,34 @@ namespace HelpdeskRemoteControl
     public partial class MainWindow : Window
     {
         //-----------------------------------------------------------------
-        // Вспомогательные cвойства методы.
+        // Вспомогательные cвойства и методы
         //-----------------------------------------------------------------
 
-        /// <summary>
-        /// Название приложения.
-        /// </summary>
-        private string _productName;
+        // Информация о сборке
+        // Нужно вручную дублировать в свойствах проекта
+        private const string _name = "Helpdesk Remote Control";
+        private const string _version = "1.1.2";
+        private const string _copyright = "Copyright © Любимов Роман 2015-2018";
 
-        /// <summary>
-        /// Версия приложения.
-        /// </summary>
-        private string _productVersion;
+        // Настройки из файла Settings.xml
+        private string _adSearchRoot;
+        private string _sccmServer;
 
-        /// <summary>
-        /// Информация об авторских правах.
-        /// </summary>
-        private string _copyright;
+        private Searcher _searcher;
 
         /// <summary>
         /// Поиск пользователей, вывод результатов в ListBox UserList.
         /// </summary>
         private void SearchUser()
         {
-            ADSearcher adSearcher = new ADSearcher();
-            
-            UserList.ItemsSource = adSearcher.GetUsersByNameOrLogin(UserSearchString.Text.ToString());
+            try
+            {
+                UserList.ItemsSource = _searcher.GetUsersByNameOrLogin(UserSearchString.Text.ToString());
+            }
+            catch (Exception e)
+            {
+                Helper.ErrorMessage(e.Message);
+            }
         }
 
         /// <summary>
@@ -57,9 +60,14 @@ namespace HelpdeskRemoteControl
         /// </summary>
         private void SearchComputer()
         {
-            SCCMSearcher sccmSearcher = new SCCMSearcher();
-            
-            ComputerList.ItemsSource = sccmSearcher.GetComputersByUserLogin(ComputerSearchString.Text.ToString());
+            try
+            {
+                ComputerList.ItemsSource = _searcher.GetComputersByUserLogin(ComputerSearchString.Text.ToString());
+            }
+            catch (Exception e)
+            {
+                Helper.ErrorMessage(e.Message);
+            }
         }
 
         /// <summary>
@@ -80,34 +88,41 @@ namespace HelpdeskRemoteControl
         }
 
         //-----------------------------------------------------------------
-        // Обработчики событий.
+        // Обработчики событий
         //-----------------------------------------------------------------
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // Получение данных из информации о сборке.
-            _productVersion = Application.Current.MainWindow.GetType().Assembly.GetName().Version.ToString();
-
-            object[] attributes = Application.Current.MainWindow.GetType().Assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), true);
-            if (attributes.Length > 0)
-            {
-                _productName = ((AssemblyProductAttribute)attributes[0]).Product;
-            }
-
-            attributes = Application.Current.MainWindow.GetType().Assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
-            if (attributes.Length > 0)
-            {
-                _copyright = ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-            }
-            
-            // Установка параметров окна.
-            Title = _productName;
+            // Установка параметров окна
+            Title = _name;
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             UserSearchString.Focus();
 
-            SettingsReader.ReadSettings();
+            // Чтение настроек из файла Settings.xml
+            try
+            {
+                XmlDocument xdoc = new XmlDocument();
+                xdoc.Load(@"Settings.xml");
+
+                _adSearchRoot = xdoc.SelectSingleNode("/Settings/ActiveDirectory/SearchRoot").InnerText;
+                _sccmServer = xdoc.SelectSingleNode("/Settings/ConfigurationManager/Server").InnerText;
+            }
+            catch (Exception e)
+            {
+                Helper.ErrorMessage("Ошибка при чтении файла Settings.xml. " + e.Message);
+            }
+            
+            // Создание объекта для поиска
+            try
+            {
+                _searcher = new Searcher(_adSearchRoot, _sccmServer);
+            }
+            catch (Exception e)
+            {
+                Helper.ErrorMessage(e.Message);
+            }
         }
 
         private void SearchUserButton_Click(object sender, RoutedEventArgs e)
@@ -256,7 +271,7 @@ namespace HelpdeskRemoteControl
 
         private void ShowAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(_productName + Environment.NewLine + "v" + _productVersion + Environment.NewLine + _copyright, "О программе", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(_name + Environment.NewLine + "v" + _version + Environment.NewLine + _copyright, "О программе", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

@@ -16,9 +16,8 @@ namespace HelpdeskRemoteControl.Core
     public static class Helper
     {
         /// <summary>
-        /// Вывод сообщения об ошибке.
+        /// Выводит сообщение об ошибке.
         /// </summary>
-        /// <param name="message">Текст сообщения.</param>
         public static void ErrorMessage(string message)
         {
             MessageBox.Show(message, "Ошибка", MessageBoxButton.OK,  MessageBoxImage.Error);
@@ -27,8 +26,6 @@ namespace HelpdeskRemoteControl.Core
         /// <summary>
         /// Создает BitmapImage из массива byte[].
         /// </summary>
-        /// <param name="byteArray"></param>
-        /// <returns></returns>
         public static BitmapImage ByteArrayToBitmapImage(byte[] byteArray)
         {
             if (byteArray != null && byteArray.Length > 0)

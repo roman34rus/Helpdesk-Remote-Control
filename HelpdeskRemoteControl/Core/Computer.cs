@@ -1,44 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HelpdeskRemoteControl.AD;
+using HelpdeskRemoteControl.SCCM;
 
 namespace HelpdeskRemoteControl.Core
 {
     /// <summary>
-    /// Компьютер
+    /// Содержит данные о компьютере.
     /// </summary>
     public class Computer
     {
-        // Атрибут SCCM: SMS_R_System.Name
         public string Name { get; set; }
 
-        // Атрибут SCCM: SMS_R_System.IPAddresses[]
         public string IPAddresses { get; set; }
 
-        // Атрибут SCCM: SMS_R_System.LastLogonUserDomain
         public string LastUserDomain { get; set; }
 
-        // Атрибут SCCM: SMS_R_System.LastLogonUserName
         public string LastUserName { get; set; }
 
-        // Атрибут SCCM: SMS_R_System.LastLogonTimeStamp
         public DateTime LastUserLogonTime { get; set; }
 
-        // Атрибут SCCM: SMS_R_System.ClientVersion
         public string SCCMClientVersion { get; set; }
 
-        // Атрибут SCCM: SMS_R_System.SMSAssignedSites
         public string SCCMAssignedSites { get; set; }
 
-        // Атрибут AD: Computer.Description
         public string Description { get; set; }
 
-        // Атрибут AD: Computer.ms-Mcs-AdmPwd (содержит пароль лок. админа если используется LAPS)
         public string LocalAdminPassword { get; set; }
 
-        // Переопределение метода ToString() нужно для корректного отображения в ListBox
+        public Computer(SCCMComputer sccmComputer, ADComputer adComputer)
+        {
+            if (sccmComputer != null)
+            {
+                Name = sccmComputer.Name;
+                IPAddresses = sccmComputer.IPAddresses;
+                LastUserDomain = sccmComputer.LastUserDomain;
+                LastUserName = sccmComputer.LastUserName;
+                LastUserLogonTime = sccmComputer.LastUserLogonTime;
+                SCCMClientVersion = sccmComputer.SCCMClientVersion;
+                SCCMAssignedSites = sccmComputer.SCCMAssignedSites;
+            }
+            if (adComputer != null)
+            {
+                Name = adComputer.Name;
+                Description = adComputer.Description;
+                LocalAdminPassword = adComputer.LocalAdminPassword;
+            }
+        }
+
+        // Переопределение метода ToString() нужно для корректного отображения в ListBox.
         public override string ToString()
         {
             return Name;

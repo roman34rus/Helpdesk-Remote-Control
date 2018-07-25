@@ -82,21 +82,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SCCM\SCCMComputer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Core\ADComputer.cs" />
-    <Compile Include="Core\ADSearcher.cs" />
-    <Compile Include="Core\Helper.cs" />
-    <Compile Include="Core\SettingsReader.cs" />
+    <Compile Include="AD\ADComputer.cs" />
+    <Compile Include="AD\ADSearcher.cs" />
+    <Compile Include="AD\ADUser.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Core\Searcher.cs" />
     <Compile Include="Core\User.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\Computer.cs" />
-    <Compile Include="Core\SCCMSearcher.cs" />
+    <Compile Include="SCCM\SCCMSearcher.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
