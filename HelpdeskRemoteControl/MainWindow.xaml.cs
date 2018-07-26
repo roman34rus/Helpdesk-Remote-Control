@@ -31,7 +31,7 @@ namespace HelpdeskRemoteControl
         // Информация о сборке
         // Нужно вручную дублировать в свойствах проекта
         private const string _name = "Helpdesk Remote Control";
-        private const string _version = "1.1.2";
+        private const string _version = "1.1.3";
         private const string _copyright = "Copyright © Любимов Роман 2015-2018";
 
         // Настройки из файла Settings.xml
@@ -280,6 +280,11 @@ namespace HelpdeskRemoteControl
         private void PingButton_Click(object sender, RoutedEventArgs e)
         {
             StartProcess(@"cmd.exe", @"/k ping " + ConnectionString.Text + @" -t");
+        }
+
+        private void CmdRemoteSessionButton_Click(object sender, RoutedEventArgs e)
+        {
+            StartProcess(@"psexec.exe", @"\\" + ConnectionString.Text + @" cmd");
         }
 
         private void PSRemoteSessionButton_Click(object sender, RoutedEventArgs e)

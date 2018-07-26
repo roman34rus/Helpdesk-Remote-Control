@@ -215,14 +215,16 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Click="PingButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
-                        <Button x:Name="PSRemoteSessionButton" Content="Удаленная сессия Powershell" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" Click="PSRemoteSessionButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
-                        <Button x:Name="ComputerManagementButton" Content="Управление компьютером" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" Click="ComputerManagementButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
-                        <Button x:Name="SCCMRemoteControlButton" Content="SCCM Remote Control" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" Click="SCCMRemoteControlButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
-                        <Button x:Name="RemoteAssistantButton" Content="Удаленный помощник" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" Click="RemoteAssistantButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
-                        <Button x:Name="RemoteDesktopButton" Content="Удаленный рабочий стол" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Click="RemoteDesktopButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
+                        <Button x:Name="CmdRemoteSessionButton" Content="Удаленная сессия CMD (psexec)" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" Click="CmdRemoteSessionButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="PSRemoteSessionButton" Content="Удаленная сессия Powershell" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" Click="PSRemoteSessionButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="ComputerManagementButton" Content="Управление компьютером" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" Click="ComputerManagementButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="SCCMRemoteControlButton" Content="SCCM Remote Control" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" Click="SCCMRemoteControlButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="RemoteAssistantButton" Content="Удаленный помощник" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Click="RemoteAssistantButton_Click" Style="{StaticResource ButtonAsHyperlink}" Margin="0,0,0,10"/>
+                        <Button x:Name="RemoteDesktopButton" Content="Удаленный рабочий стол" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" Click="RemoteDesktopButton_Click" Style="{StaticResource ButtonAsHyperlink}"/>
                     </Grid>
                 </Grid>
             </TabItem>
