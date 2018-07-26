@@ -13,9 +13,7 @@ namespace HelpdeskRemoteControl.Core
 
         public string IPAddresses { get; set; }
 
-        public string LastUserDomain { get; set; }
-
-        public string LastUserName { get; set; }
+        public string LastUserDomainName { get; set; }
 
         public DateTime LastUserLogonTime { get; set; }
 
@@ -33,8 +31,10 @@ namespace HelpdeskRemoteControl.Core
             {
                 Name = sccmComputer.Name;
                 IPAddresses = sccmComputer.IPAddresses;
-                LastUserDomain = sccmComputer.LastUserDomain;
-                LastUserName = sccmComputer.LastUserName;
+
+                if (!String.IsNullOrEmpty(sccmComputer.LastUserName))
+                    LastUserDomainName = sccmComputer.LastUserDomain + @"\" + sccmComputer.LastUserName;
+
                 LastUserLogonTime = sccmComputer.LastUserLogonTime;
                 SCCMClientVersion = sccmComputer.SCCMClientVersion;
                 SCCMAssignedSites = sccmComputer.SCCMAssignedSites;

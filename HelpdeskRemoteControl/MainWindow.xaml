@@ -60,12 +60,12 @@
 
                         <Label Content="Имя или логин пользователя:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
 
-                        <TextBox x:Name="UserSearchString" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Введите имя или логин пользователя. Например: &quot;Петров Иван&quot;, &quot;PetrovIS&quot;." Grid.Column="0" Grid.Row="1" KeyUp="UserSearchString_KeyUp"/>
+                        <TextBox x:Name="UserSearchString" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" KeyUp="UserSearchString_KeyUp"/>
                         <Button x:Name="SearchUserButton" Content="Найти" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SearchUserButton_Click" Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonAsHyperlink}" Margin="10,0,0,0"/>
 
                         <Label Content="Найденные пользователи:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
 
-                        <ListBox x:Name="UserList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" SelectionChanged="UserList_SelectionChanged" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" MouseDoubleClick="UserList_MouseDoubleClick" ToolTip="Двойной клик по имени пользователя - переход к поиску компьютеров этого пользователя."/>
+                        <ListBox x:Name="UserList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" SelectionChanged="UserList_SelectionChanged" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" MouseDoubleClick="UserList_MouseDoubleClick" ToolTip="Двойной клик по имени пользователя - переход к поиску компьютеров на которых он работал."/>
                     </Grid>
 
                     <Grid Grid.Column="1" Margin="20,0,0,0">
@@ -131,17 +131,24 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <Label Content="Логин пользователя:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
 
-                        <TextBox x:Name="ComputerSearchString" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Введите имя или логин пользователя. Например: &quot;PetrovIS&quot;." Grid.Column="0" Grid.Row="1" KeyUp="ComputerSearchString_KeyUp"/>
-                        <Button x:Name="SearchComputerButton" Content="Найти" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SearchComputerButton_Click" Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonAsHyperlink}" Margin="10,0,0,0"/>
+                        <TextBox x:Name="ComputerSearchStringUserLogin" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" KeyUp="ComputerSearchStringUserLogin_KeyUp"/>
+                        <Button x:Name="SearchComputerByUserLoginButton" Content="Найти" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SearchComputerByUserLoginButton_Click" Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonAsHyperlink}" Margin="10,0,0,0"/>
 
-                        <Label Content="Компьютеры, куда пользователь входил последним:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
+                        <Label Content="Имя или описание компьютера:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
 
-                        <ListBox x:Name="ComputerList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" SelectionChanged="ComputerList_SelectionChanged" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" MouseDoubleClick="ComputerList_MouseDoubleClick" ToolTip="Двойной клик по имени компьютера - переход к удаленному управлению этим компьютером."/>
+                        <TextBox x:Name="ComputerSearchStringNameOrDesc" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3" KeyUp="ComputerSearchStringNameOrDesc_KeyUp"/>
+                        <Button x:Name="SearchComputerByNameOrDescButton" Content="Найти" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SearchComputerByNameOrDescButton_Click" Grid.Column="1" Grid.Row="3" Style="{StaticResource ButtonAsHyperlink}" Margin="10,0,0,0"/>
+
+                        <Label Content="Найденные компьютеры:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
+
+                        <ListBox x:Name="ComputerList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" SelectionChanged="ComputerList_SelectionChanged" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" MouseDoubleClick="ComputerList_MouseDoubleClick" ToolTip="Двойной клик по имени компьютера - переход к удаленному управлению этим компьютером."/>
                     </Grid>
 
                     <Grid Grid.Column="1" Margin="20,0,0,0">
@@ -197,7 +204,7 @@
 
                         <Label Content="Имя или IP адрес компьютера:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
 
-                        <TextBox x:Name="ConnectionString" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" ToolTip="Имя компьютера. Например: &quot;ws-test-01&quot;." Grid.Column="0" Grid.Row="1"/>
+                        <TextBox x:Name="ConnectionString" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Grid.Column="0" Grid.Row="1"/>
                     </Grid>
 
                     <Grid Grid.Row="1" Margin="10,10,0,0">

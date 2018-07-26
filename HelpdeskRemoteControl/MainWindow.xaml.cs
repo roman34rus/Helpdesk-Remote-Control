@@ -43,7 +43,7 @@ namespace HelpdeskRemoteControl
         /// <summary>
         /// Поиск пользователей, вывод результатов в ListBox UserList.
         /// </summary>
-        private void SearchUser()
+        private void SearchUsers()
         {
             try
             {
@@ -56,13 +56,37 @@ namespace HelpdeskRemoteControl
         }
 
         /// <summary>
-        /// Поиск компьютеров, вывод результатов в ListBox ComputerList.
+        /// Поиск компьютеров по имени последнего пользователя, вывод результатов в ListBox ComputerList.
         /// </summary>
-        private void SearchComputer()
+        private void SearchComputersByUserLogin()
+        {
+            string userLogin = ComputerSearchStringUserLogin.Text.ToString();
+
+            if (String.IsNullOrWhiteSpace(userLogin))
+            {
+                Helper.ErrorMessage("Нужно ввести логин пользователя.");
+
+                return;
+            }
+
+            try
+            {
+                ComputerList.ItemsSource = _searcher.GetComputersByUserLogin(userLogin);
+            }
+            catch (Exception e)
+            {
+                Helper.ErrorMessage(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Поиск компьютеров по имени или описанию, вывод результатов в ListBox ComputerList.
+        /// </summary>
+        private void SearchComputersByNameOrDescription()
         {
             try
             {
-                ComputerList.ItemsSource = _searcher.GetComputersByUserLogin(ComputerSearchString.Text.ToString());
+                ComputerList.ItemsSource = _searcher.GetComputersByNameOrDescription(ComputerSearchStringNameOrDesc.Text.ToString());
             }
             catch (Exception e)
             {
@@ -127,14 +151,14 @@ namespace HelpdeskRemoteControl
 
         private void SearchUserButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchUser();
+            SearchUsers();
         }
 
         private void UserSearchString_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                SearchUser();
+                SearchUsers();
             }
         }
 
@@ -158,7 +182,7 @@ namespace HelpdeskRemoteControl
                 UserPasswordLastSet.Text = user.PasswordLastSet.ToString();
 
                 // Заполняем поле для поиска компьютеров.
-                ComputerSearchString.Text = user.Login;
+                ComputerSearchStringUserLogin.Text = user.Login;
             }
             else
             {
@@ -175,7 +199,7 @@ namespace HelpdeskRemoteControl
                 UserPhoto.Source = null;
 
                 // Очищаем поле для поиска компьютеров.
-                ComputerSearchString.Text = "";
+                ComputerSearchStringUserLogin.Text = "";
             }
         }
 
@@ -185,16 +209,29 @@ namespace HelpdeskRemoteControl
                 ComputerTab.Focus();
         }   
 
-        private void SearchComputerButton_Click(object sender, RoutedEventArgs e)
+        private void SearchComputerByUserLoginButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchComputer();
+            SearchComputersByUserLogin();
         }
 
-        private void ComputerSearchString_KeyUp(object sender, KeyEventArgs e)
+        private void ComputerSearchStringUserLogin_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                SearchComputer();
+                SearchComputersByUserLogin();
+            }
+        }
+
+        private void SearchComputerByNameOrDescButton_Click(object sender, RoutedEventArgs e)
+        {
+            SearchComputersByNameOrDescription();
+        }
+
+        private void ComputerSearchStringNameOrDesc_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SearchComputersByNameOrDescription();
             }
         }
 
@@ -207,7 +244,7 @@ namespace HelpdeskRemoteControl
                 // Заполняем поля информации о компьютере.
                 ComputerName.Text = computer.Name;
                 ComputerIPAddresses.Text = computer.IPAddresses;
-                ComputerLastUserDomainAndName.Text = computer.LastUserDomain + @"\" + computer.LastUserName;
+                ComputerLastUserDomainAndName.Text = computer.LastUserDomainName;
                 ComputerLastUserLoginTime.Text = computer.LastUserLogonTime.ToString();
                 ComputerSCCMClientVersion.Text = computer.SCCMClientVersion;
                 ComputerSCCMAssignedSites.Text = computer.SCCMAssignedSites;

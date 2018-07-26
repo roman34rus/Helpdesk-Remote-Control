@@ -18,6 +18,33 @@ namespace HelpdeskRemoteControl.SCCM
     {
         private WqlConnectionManager _connection;
 
+        private SCCMComputer QueryResultToSCCMComputer(IResultObject queryResult)
+        {
+            if (queryResult == null)
+                return null;
+
+            SCCMComputer computer = new SCCMComputer();
+
+            computer.Name = queryResult["Name"].StringValue;
+
+            foreach (string address in queryResult["IPAddresses"].StringArrayValue)
+            {
+                computer.IPAddresses += address + " ";
+            }
+
+            computer.LastUserDomain = queryResult["LastLogonUserDomain"].StringValue;
+            computer.LastUserName = queryResult["LastLogonUserName"].StringValue;
+            computer.LastUserLogonTime = queryResult["LastLogonTimeStamp"].DateTimeValue;
+            computer.SCCMClientVersion = queryResult["ClientVersion"].StringValue;
+
+            foreach (string site in queryResult["SMSAssignedSites"].StringArrayValue)
+            {
+                computer.SCCMAssignedSites += site + " ";
+            }
+
+            return computer;
+        }
+
         /// <summary>
         /// Инициализирует новый экземпляр класса для поиска на указанном сервере Configuration Manager.
         /// </summary>
@@ -52,26 +79,10 @@ namespace HelpdeskRemoteControl.SCCM
 
                 foreach (IResultObject queryResult in queryResults)
                 {
-                    SCCMComputer computer = new SCCMComputer();
+                    SCCMComputer computer = QueryResultToSCCMComputer(queryResult);
 
-                    computer.Name = queryResult["Name"].StringValue;
-
-                    foreach (string address in queryResult["IPAddresses"].StringArrayValue)
-                    {
-                        computer.IPAddresses += address + " ";
-                    }
-
-                    computer.LastUserDomain = queryResult["LastLogonUserDomain"].StringValue;
-                    computer.LastUserName = queryResult["LastLogonUserName"].StringValue;
-                    computer.LastUserLogonTime = queryResult["LastLogonTimeStamp"].DateTimeValue;
-                    computer.SCCMClientVersion = queryResult["ClientVersion"].StringValue;
-
-                    foreach (string site in queryResult["SMSAssignedSites"].StringArrayValue)
-                    {
-                        computer.SCCMAssignedSites += site + " ";
-                    }
-
-                    result.Add(computer);
+                    if (computer != null)
+                        result.Add(computer);
                 }
             }
             catch (Exception e)
@@ -80,6 +91,39 @@ namespace HelpdeskRemoteControl.SCCM
             }
 
             return result.OrderBy(x => x.Name).ToList();
+        }
+
+        /// <summary>
+        /// Получает компьютер по имени. Возвращает SCCMComputer или null.
+        /// </summary>
+        public SCCMComputer GetComputerByName(string name)
+        {
+            if (String.IsNullOrWhiteSpace(name))
+                return null;
+
+            string query = @"SELECT * FROM SMS_R_System WHERE LOWER(SMS_R_System.Name) = '" + name.ToLower() + @"'";
+
+            IResultObject queryResults;
+
+            try
+            {
+                queryResults = _connection.QueryProcessor.ExecuteQuery(query);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Ошибка при поиске в Configuration Manager. " + e.Message);
+            }
+
+            SCCMComputer computer = null;
+
+            foreach (IResultObject queryResult in queryResults)
+            {
+                computer = QueryResultToSCCMComputer(queryResult);
+
+                break;
+            }
+
+            return computer;
         }
     }
 }

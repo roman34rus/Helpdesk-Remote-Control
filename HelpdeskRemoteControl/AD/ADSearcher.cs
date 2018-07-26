@@ -11,6 +11,28 @@ namespace HelpdeskRemoteControl.AD
     public class ADSearcher
     {
         private DirectorySearcher _search;
+
+        /// <summary>
+        /// Получает ADComputer из SearchResult. Возвращает ADComputer или null.
+        /// </summary>
+        private ADComputer SearchResultToADComputer(SearchResult searchResult)
+        {
+            if (searchResult == null)
+                return null;
+
+            ADComputer computer = new ADComputer();
+
+            if (searchResult.Properties.Contains("name"))
+                computer.Name = (String)searchResult.Properties["name"][0];
+
+            if (searchResult.Properties.Contains("description"))
+                computer.Description = (String)searchResult.Properties["description"][0];
+
+            if (searchResult.Properties.Contains("ms-Mcs-AdmPwd"))
+                computer.LocalAdminPassword = (String)searchResult.Properties["ms-Mcs-AdmPwd"][0];
+
+            return computer;
+        }
         
         /// <summary>
         /// Инициализирует новый экземпляр класса для поиска в Active Directory по указанному пути.
@@ -30,7 +52,7 @@ namespace HelpdeskRemoteControl.AD
         }
 
         /// <summary>
-        /// Возвращает список пользователей по имени или логину. Имя/логин можно указать не полностью.
+        /// Возвращает список пользователей по имени или логину.
         /// </summary>
         public List<ADUser> GetUsersByNameOrLogin(string nameOrLogin)
         {
@@ -114,12 +136,10 @@ namespace HelpdeskRemoteControl.AD
         }
 
         /// <summary>
-        /// Возвращает компьютер по имени.
+        /// Получает компьютер по имени. Возвращает ADComputer или null.
         /// </summary>
         public ADComputer GetComputerByName(string name)
         {
-            ADComputer computer = new ADComputer();
-
             try
             {
                 _search.Filter = "(&(objectClass=computer)(name=" + name + "))";
@@ -130,24 +150,52 @@ namespace HelpdeskRemoteControl.AD
 
                 SearchResult searchResult = _search.FindOne();
 
-                if (searchResult == null)
-                    return null;
+                return SearchResultToADComputer(searchResult);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Ошибка при поиске в Active Directory. " + e.Message);
+            }
+        }
 
-                if (searchResult.Properties.Contains("name"))
-                    computer.Name = (String)searchResult.Properties["name"][0];
+        /// <summary>
+        /// Возвращает список компьютеров по имени или описанию.
+        /// </summary>
+        public List<ADComputer> GetComputersByNameOrDescription(string nameOrDescription)
+        {
+            List<ADComputer> computers = new List<ADComputer>();
 
-                if (searchResult.Properties.Contains("description"))
-                    computer.Description = (String)searchResult.Properties["description"][0];
+            string searchString;
 
-                if (searchResult.Properties.Contains("ms-Mcs-AdmPwd"))
-                    computer.LocalAdminPassword = (String)searchResult.Properties["ms-Mcs-AdmPwd"][0];
+            if (String.IsNullOrWhiteSpace(nameOrDescription))
+                searchString = @"*";
+            else
+                searchString = @"*" + nameOrDescription + @"*";
+                
+            try
+            {
+                _search.Filter = "(&(objectClass=computer)(|(name=" + searchString + ")(description=" + searchString + ")))";
+
+                _search.PropertiesToLoad.Add("name");
+                _search.PropertiesToLoad.Add("description");
+                _search.PropertiesToLoad.Add("ms-Mcs-AdmPwd");
+
+                SearchResultCollection searchResults = _search.FindAll();
+
+                foreach (SearchResult searchResult in searchResults)
+                {
+                    ADComputer computer = SearchResultToADComputer(searchResult);
+
+                    if (computer != null)
+                        computers.Add(computer);
+                }
             }
             catch (Exception e)
             {
                 throw new Exception("Ошибка при поиске в Active Directory. " + e.Message);
             }
 
-            return computer;
+            return computers.OrderBy(x => x.Name).ToList();
         }
     }
 }

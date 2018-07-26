@@ -35,7 +35,7 @@ namespace HelpdeskRemoteControl.Core
         }
 
         /// <summary>
-        /// Возвращает список пользователей по имени или логину. Имя/логин можно указать не полностью.
+        /// Возвращает список пользователей по имени или логину.
         /// </summary>
         public List<User> GetUsersByNameOrLogin(string nameOrLogin)
         {
@@ -83,6 +83,43 @@ namespace HelpdeskRemoteControl.Core
                 try
                 {
                     adComputer = _adSearcher.GetComputerByName(sccmComputer.Name);
+                }
+                catch
+                {
+                    throw;
+                }
+
+                computers.Add(new Computer(sccmComputer, adComputer));
+            }
+
+            return computers;
+        }
+
+        /// <summary>
+        /// Возвращает список компьютеров по имени или описанию.
+        /// </summary>
+        public List<Computer> GetComputersByNameOrDescription(string nameOrDescription)
+        {
+            List<ADComputer> adComputers = new List<ADComputer>();
+
+            try
+            {
+                adComputers = _adSearcher.GetComputersByNameOrDescription(nameOrDescription);
+            }
+            catch
+            {
+                throw;
+            }
+
+            List<Computer> computers = new List<Computer>();
+
+            foreach (ADComputer adComputer in adComputers)
+            {
+                SCCMComputer sccmComputer;
+
+                try
+                {
+                    sccmComputer = _sccmSearcher.GetComputerByName(adComputer.Name);
                 }
                 catch
                 {
