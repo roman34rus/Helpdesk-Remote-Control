@@ -31,7 +31,7 @@
 
 # Настройка
 
-В файле Settings.xml необходимо указать имя или адрес сервера Configuration Manager и путь для поиска пользователей в Active Directory.
+В файле Settings.xml необходимо указать имя или адрес сервера Configuration Manager и путь для поиска в Active Directory.
 
 # Заметки
 
