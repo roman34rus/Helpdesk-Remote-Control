@@ -171,7 +171,7 @@
                         <Label Content="Имя компьютера" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
                         <Label Content="IP адреса" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"/>
                         <Label Content="Последний пользователь" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2"/>
-                        <Label Content="Время логина пользователя" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3"/>
+                        <Label Content="Время логина пользователя (UTC)" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3"/>
                         <Label Content="Версия клиента SCCM" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="4"/>
                         <Label Content="Сайт SCCM" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="5"/>
                         <Label Content="Описание компьютера" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="6"/>
