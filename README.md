@@ -33,6 +33,18 @@
 
 В файле Settings.xml необходимо указать имя или адрес сервера Configuration Manager и путь для поиска в Active Directory.
 
+# Добавление инструментов удаленного управления
+
+Сторонние инструменты удаленного управления (SCCM Remote Control, psexec) необходимо добавить самостоятельно.
+
+Для использования psexec необходимо скопировать файл PsExec.exe из пакета Sysinternals (https://docs.microsoft.com/en-us/sysinternals) в каталог утилиты.
+
+Для использования SCCM Remote Control необходимо скопировать несколько файлов из каталога установленной консоли SCCM (ниже приведен путь по умолчанию) в каталог RemoteControl:
+"C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\i386\00000409\CmRcViewerRes.dll" -> "RemoteControl\00000409\CmRcViewerRes.dll"
+"C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\i386\00000419\CmRcViewerRes.dll" -> "RemoteControl\00000419\CmRcViewerRes.dll"
+"C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\i386\CmRcViewer.exe" -> "RemoteControl\CmRcViewer.exe"
+"C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\i386\RdpCoreSccm.dll" -> "RemoteControl\RdpCoreSccm.dll"
+
 # Заметки
 
 Пароль локального администратора будет отображаться только если используется LAPS.
