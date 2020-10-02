@@ -31,8 +31,8 @@ namespace HelpdeskRemoteControl
         // Информация о сборке
         // Нужно вручную дублировать в свойствах проекта
         private const string _name = "Helpdesk Remote Control";
-        private const string _version = "1.1.4";
-        private const string _copyright = "Copyright © Любимов Роман 2015-2019";
+        private const string _version = "1.1.5";
+        private const string _copyright = "Copyright © Любимов Роман 2015-2020";
 
         // Настройки из файла Settings.xml
         private string _adSearchRoot;
